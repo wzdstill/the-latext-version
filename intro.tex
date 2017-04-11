@@ -36,7 +36,7 @@ for decryption. If $\vec{v}$ is a short vector, e.g., $\vec{v}\in \{0,1\}^{\ell}
 $$ \Lambda_{\vec{v},\vec{w}}=\Lambda_{q}(\mat{A}_{0}|\Sigma^{\ell}_{i=1}v_{i}(\mat{A}_{i}+w_{i}\mat{B}))=\Lambda_{q}(\mat{A}_{0}|\Sigma^{\ell}_{i=1}v_{i}\mat{A}_{i}+(\vec{w}\vec{v})\mat{B}). $$
 So if $\vec{w}^{T}\vec{v}=0$ then the masking term $(\vec{w}^{T}\vec{v})\mat{B}$ vanishes. the secret key for $\vec{v}\in \Z^{\ell}_{q}$ is defined as a short basis of $\Lambda^{\perp}_{q}(\mat{A}_{0}|\Sigma^{\ell}_{i=1}v_{i}\mat{A}_{i})$.\
 
-In the~ \cite{PKC:Xagawa13} IPE scheme, it changed the domain of attributes $\vec{w}$ from $\Z^{\ell}_{q}$ to $GF(q^{n})^{\ell}$, while $\vec{v}$'s domain is the same as the original $\Z^{\ell}_{q}$. It also changed the way of encoding the attribute vectors $\vec{w}$, he defined a mapping $H: GF(q^{n})\rightarrow \Z^{n\times n}_{q}$, and naturally defined $\Lambda_{\vec{w}}$ for $\vec{w}=(w_{1},...,w_{\ell})^{T}\in GF(q^{n})^{\ell}$ as
+In the~\cite{PKC:Xagawa13} IPE scheme, it changed the domain of attributes $\vec{w}$ from $\Z^{\ell}_{q}$ to $GF(q^{n})^{\ell}$, while $\vec{v}$'s domain is the same as the original $\Z^{\ell}_{q}$. It also changed the way of encoding the attribute vectors $\vec{w}$, he defined a mapping $H: GF(q^{n})\rightarrow \Z^{n\times n}_{q}$, and naturally defined $\Lambda_{\vec{w}}$ for $\vec{w}=(w_{1},...,w_{\ell})^{T}\in GF(q^{n})^{\ell}$ as
 $$ \Lambda_{\vec{w}}=\Lambda_{q}(\mat{A}_{0}|\mat{A}_{1}+H(w_{1})\mat{G}|...|\mat{A}_{\ell}+H(w_{\ell})\mat{G}).$$
 For a predicate vector $\vec{v}\in \Z^{\ell}_{q}$,  the decryption mapping $F^{'}_{\vec{v}}(\vec{c}_{0},...,\vec{c}_{\ell})=(\vec{c}_{0},\Sigma^{\ell}_{i=1}H(v_{i})\cdot \vec{c}_{i}))$ is close to the lattice
 $$ \Lambda_{\vec{v},\vec{w}}=\Lambda_{q}(\mat{A}_{0}|\Sigma^{\ell}_{i=1}H(v_{i})\cdot \mat{A}_{i}+H(\vec{w}^{T}\vec{v})\mat{G}) $$
@@ -88,19 +88,7 @@ We also note that, assuming the exiting of a collision resistant hash function f
 Next, we compare our HIPE scheme with ~\cite{LC:AbdDeCMoc12,PKC:Xagawa13}. The number of matrices in ~\cite{LC:AbdDeCMoc12}'s public key is $O(\ell d \log q)$, and ~\cite{PKC:Xagawa13}'s is $O(d+\ell \log q)$, whereas our scheme enjoys compact a public key with just 2 matrices. We omit the detail, which can be obtained in the full version of the paper.\
 
 Finally, we sketch the comparison of our FIBE scheme with some related works. The number of public matrices in~\cite{PKC:ABVVW12} is $2\ell$, and $2\ell$ trapdoor matrices in $\msk$. ~\cite{PKC:Xagawa13} proposed a FIBE scheme with $\ell+1$ public matrices and one trapdoor matrix. However, in our construction, these are $2$ and 1 respectively. We describe concrete schemes in full version paper.\\
-SS\\
-S\\
-S\\
-S\\
-S\\
-S\\
-S\\
-S\\
-S\\
-S\\
-S\\
-S\\
-S\\
+
 
 
 
