@@ -1,0 +1,107 @@
+\section{Introduction}
+\leo{I will take care of intro later. When cite papers, use space before it. See the example below}
+Functional encryption has become quite popular in last few years because it provides the system administrator with fine-grained control over the decryption capabilities of its users. Two important examples of functional encryption are $attirbute-based\ encryption(\ABE)$~\cite{EC:SahWat05, CCS:GPSW06} and $predicate\ encryption(\PE)\\ $~\cite{TCC:BonWat07,
+EC:KatSahWat08}. In (key-police)$\ABE$ and $\PE$ systems, each ciphertext $c$ is associated with an attribute $a$ and each secret key $s$ is associated with predicate $f$. A user holding the key $s$ can decrypt $c$ if and only if $f(a)=1$. The difference between the two types of systems is in amount of information revealed: an $\ABE$ system reveals the attribute associated with each ciphertext, while a $\PE$ system keeps the attribute hidden.\
+
+In this paper, we focus on the notation of inner-product encryption(IPE), introduced by Katz, Sahai, and Waters ~\cite{EC:KatSahWat08}, which is a $\PE$ scheme that supports the inner-product predicate: attributes $a$ and predicates $f$ are expressed as vectors $\overrightarrow{v}_{a}$ and $\overrightarrow{w}_{f}$. We say $f(a)=1$ if and only if $\langle \overrightarrow{v}_{a}, \overrightarrow{w}_{f} \rangle=0$. As point out in  ~\cite{EC:KatSahWat08}, inner-product predicates can also support conjunction, subset and range queries on encrypted date\cite{TCC:BonWat07} as well as disjunctions, polynomial evaluation, and $\mat{CNF}$ and $\mat{DNF}$ formulas~\cite{EC:KatSahWat08}.\
+
+In recent years, there were a number of IPE schemes~\cite{EC:KatSahWat08, AC:OkaTak09, EC:LOSTW10, C:OkaTak10, PKC:AttLib10, Park2011Inner, CANS:OkaTak11, EC:OkaTak12} have been proposed, the security of these schemes is based on composite-number or prime order groups. while assumption such as these can often be shown to hold in a suitable generic group model, to obtain more confidence in security, we would like to build IPE scheme based on computational problems such as lattice-based hardness problems, whose complexity is better understood.\
+
+Agrawal, Freeman, and Vaikuntanathan~ \cite{AC:AgrFreVai11} proposed the first IPE scheme based on the LWE assumption, and Xagawa ~\cite{PKC:Xagawa13} improved the efficiency of [AFV11]'s scheme. While the scheme of ~\cite{PKC:Xagawa13} has public parameters of size $O(\ell n^{2}\lg^{2}q)$ and ciphertexts of size $O(\ell n\lg^{2}q)$, where $\ell$ is the length of predicate vector, $n$ is the security parameter, and $q$ is the modulus. which still makes the scheme impractical.
+
+\subsection{Our Contributions}
+In this work, we construct an inner-product encryption scheme (IPE) from the standard Learning with Error~ \cite{STOC:Regev05} assumption with a compact public key of size $2nm\log q$ and ciphertexts of size $(2m+1)\log q$. This asymptotically matches the public key space and ciptertext space complexity of known lattice-based PKE schemes. and points us toward real-world-efficient implementations of lattice-based IPE. We emphasize that prior lattice-based IPE schemes~ \cite{AC:AgrFreVai11, PKC:Xagawa13} have public keys and cipertexts whose size grow at least linearly with $\ell$, the length of predicate vectors(attribute vector), whereas our IPE's PK and cipertexts size are (at least) asymptotically sublinear in the predicate vectors length. We provide a detail comparison with several recent work in section
+\begin{theorem}[Main]
+Under the standard Learning with Error (LWE) assumption, there is an inner-product encryption (IPE) scheme with weakly attribute hiding security supporting predicates and attributes of length $\ell=O(\log^{2} n)$, where
+\begin{itemize}
+ \item the modulus $q$ is a prime of size polynomial in the security parameter $n$,
+ \item cipertexts consist of a vector in $\Z^{2m+1}_{q}$, and
+ \item the public key consists of two matrices in $\Z^{n \times m}_{q}$ and one vector in $\Z^{n}_{q}$.
+\end{itemize}
+\end{theorem}
+We note that we can extend the attribute domain by assuming an exponentially-secure collision resistant hash function from $\{0,1\}^{n}\rightarrow \{0,1\}^{\log^{2}n}$.\
+
+In addition, We have two side contributions: One is an extension of hierarchical inner-product encryption (HIPE)~ \cite{AC:OkaTak09}, which implies spatial encryption(SE)~ \cite{AC:BonHam08}. We apply our techniques to drastically improve the existing HIPE scheme from lattices ~\cite{LC:AbdDeCMoc12, PKC:Xagawa13}. The other is a fuzzy IBE (FIBE) scheme over a small universe $\{0,1\}$ from IPE under the LWE assumption with compact public key size and cipertexts size, whereas the existing fuzzy IBE schemes from lattices have public key whose size grows linearly with  the length of identities $\ell$~ \cite{PKC:ABVVW12, PKC:Xagawa13}.
+
+\subsection{Our Techniques}
+Our high-level approach to compact inner-product encryption from LWE begins by revisiting the lattice based IPE scheme proposed by Agrawal, Freeman, and Vaikuntanathan~ \cite{AC:AgrFreVai11} and Xagawa~ \cite{PKC:Xagawa13}.\
+
+In the~ \cite{AC:AgrFreVai11} IPE scheme, the encryption lattice for ciphertext-attribute vector $\vec{w} \in \Z^{\ell}_{q}$ is defined as
+$$\Lambda_{\vec{w}}=\Lambda_{q}(\mat{A}_{0}|\mat{A}_{1}+w_{1}\mat{B}|...|\mat{A}_{\ell}+w_{\ell}\mat{B}).$$
+The cipertext is a vector $\vec{c}=(\vec{c}_{0},...,\vec{c}_{\ell}) \in \Z^{m \times (\ell+1)}_{q}$ close to $\Lambda_{\vec{w}}$.\
+
+They define the mapping $F_{\vec{v}}: \Z^{m \times (\ell+1)}_{q} \rightarrow \Z^{2m}_{q}$ as
+$$ F_{\vec{v}}(\vec{c}_{0},\vec{c}_{1}...,\vec{c}_{\ell})=(\vec{c}_{0},\Sigma^{\ell}_{i=1}v_{i}\vec{c}_{i})\in \Z^{2m}_{q}$$
+for decryption. If $\vec{v}$ is a short vector, e.g., $\vec{v}\in \{0,1\}^{\ell} \subset \Z^{\ell}_{q}$, then $F_{\vec{v}}(\vec{c})$ is a vector close to the lattice
+$$ \Lambda_{\vec{v},\vec{w}}=\Lambda_{q}(\mat{A}_{0}|\Sigma^{\ell}_{i=1}v_{i}(\mat{A}_{i}+w_{i}\mat{B}))=\Lambda_{q}(\mat{A}_{0}|\Sigma^{\ell}_{i=1}v_{i}\mat{A}_{i}+(\vec{w}\vec{v})\mat{B}). $$
+So if $\vec{w}^{T}\vec{v}=0$ then the masking term $(\vec{w}^{T}\vec{v})\mat{B}$ vanishes. the secret key for $\vec{v}\in \Z^{\ell}_{q}$ is defined as a short basis of $\Lambda^{\perp}_{q}(\mat{A}_{0}|\Sigma^{\ell}_{i=1}v_{i}\mat{A}_{i})$.\
+
+In the~ \cite{PKC:Xagawa13} IPE scheme, it changed the domain of attributes $\vec{w}$ from $\Z^{\ell}_{q}$ to $GF(q^{n})^{\ell}$, while $\vec{v}$'s domain is the same as the original $\Z^{\ell}_{q}$. It also changed the way of encoding the attribute vectors $\vec{w}$, he defined a mapping $H: GF(q^{n})\rightarrow \Z^{n\times n}_{q}$, and naturally defined $\Lambda_{\vec{w}}$ for $\vec{w}=(w_{1},...,w_{\ell})^{T}\in GF(q^{n})^{\ell}$ as
+$$ \Lambda_{\vec{w}}=\Lambda_{q}(\mat{A}_{0}|\mat{A}_{1}+H(w_{1})\mat{G}|...|\mat{A}_{\ell}+H(w_{\ell})\mat{G}).$$
+For a predicate vector $\vec{v}\in \Z^{\ell}_{q}$,  the decryption mapping $F^{'}_{\vec{v}}(\vec{c}_{0},...,\vec{c}_{\ell})=(\vec{c}_{0},\Sigma^{\ell}_{i=1}H(v_{i})\cdot \vec{c}_{i}))$ is close to the lattice
+$$ \Lambda_{\vec{v},\vec{w}}=\Lambda_{q}(\mat{A}_{0}|\Sigma^{\ell}_{i=1}H(v_{i})\cdot \mat{A}_{i}+H(\vec{w}^{T}\vec{v})\mat{G}) $$
+if $\vec{w}^{T}\vec{v}=0$ then $H(\vec{w}^{T}\vec{v})=0$. Using the property of the structured matrix $\mat{G}$, this scheme doesn't need to use the binary decomposition technique as ~\cite{AC:AgrFreVai11}, but the size of public key and cipertexts still grow with the length of attribute/predicate vectors.
+\paragraph{Our new encoding techniques}. Here, we present our new encoding technical. We draw a connection between the public of our IPE scheme and the GSW-FHE~ \cite{C:GenSahWat13}. To be more exact, we recall the FHE scheme proposed by Hiromasa, Abe, and Okamoto~ \cite{PKC:HirAbeOka15}, which shows that by applying SIMD (Single Instruction Multiple Data) message-packing techniques to the GSW-FHE, the result scheme is $matrix-multiplication-homomorphic$.\
+
+The cipertexts in~ \cite{PKC:HirAbeOka15} have the form $\mat{AR}+\mat{MG}$, where $\mat{A}\in \Z^{n \times m}_{q}, \mat{R}\in \Z^{m \times m}_{q}$, and $\mat{M}\in \Z^{n \times n}_{q}$ contains a message vector $\mu$ along the diagonal, and where $\mat{G}\in \Z^{n \times m}_{q}$ is the "gadget matrix" that first introduced in~\cite{EC:MicPei12}. The key point is that there is an efficient computable function $\mat{G}^{-1}$, so that
+\begin{enumerate}
+\item The multiplication homomorphism holds ($\ct_{1}\cdot \mat{G}^{-1}(\ct_{2})=\ct_{\times}$), and
+\item $\mat{G}^{-1}(\mat{AR}+\mat{MG})$ is a matrix in $\{0,1\}^{m \times m}$, and has small norm.
+\end{enumerate}
+The scheme is also naturally equipped with a matrix-multiplication-by-a-constant operation of the following form:
+$$(\mat{AR}+\mat{MG})\cdot \mat{G}^{-1}(\mat{CG})=\mat{AR}\cdot small+\mat{MCG},$$
+this leads us to consider a new encoding technique where the public key matrices $\mat{A}_{i}\in \Z^{n \times m}_{q}$ are "multiplied by a constant" $\mat{W}_{i}\in \Z^{n \times n}_{q}$, where the matrix $\mat{W}_{i}$ contains the $i$-th attribute coordinate $w_{i}$ on each coordinate of its diagonal. So the encryption lattice is defined as
+$$ \Lambda_{\vec{w}}=\Lambda_{q}(\mat{A}_{0}|\Sigma_{i} (\mat{A}_{i}+\mat{W}_{i}\mat{G})),$$
+and define the mapping $F_{\vec{v}}: \Z^{m \times (i+1)}_{q} \rightarrow \Z^{2m}_{q}$ as
+$$ F_{\vec{v}}(\vec{c}_{0},\vec{c}_{1}...,\vec{c}_{i})=(\vec{c}_{0},\Sigma_{i}\vec{c}_{i}\mat{G}^{-1}(\mat{V}_{i}\mat{G}))\in \Z^{2m}_{q},$$
+where the $\mat{V}_{i}$ is the matrix contains the $i$-th predicate coordinate $v_{i}$ on each coordinate of its diagonal. Then, $F_{\vec{v}}(\vec{c})$ is close to the lattice
+$$ \Lambda_{\vec{v},\vec{w}}=\Lambda_{q}(\mat{A}_{0}|\Sigma_{i}(\mat{G}^{-1}(\mat{V}_{i}\mat{G})\mat{A}_{i}+\mat{V}_{i}\mat{W}_{i}\mat{G})),$$
+if $\vec{w}^{T}\vec{v}=0$, $\mat{V}_{i}\mat{W}_{i}\mat{G}$ vanishes.\
+
+In order to achieve the public key of two matrices, we need to shrink the matrices $\mat{W}_{i}$ into one matrix. So we extend the "gadget matrix" $\mat{G}$ and function $\mat{G}^{-1}$ to other powers, i.e., $\mat{G}_{n\ell,\ell^{'},m}$ (which can be padded by $\mat{G}_{n\ell,\ell^{'}}$ with zerro) and $\mat{G}^{-1}_{n\ell,\ell^{'},m}$. Then we pad all the matrices $\mat{W}_{i}$ into one matrix $\mat{W}^{'}=[\mat{W}_{1},...,\mat{W}_{\ell}]$, and set $\mat{W}=\mat{W}^{'}\cdot \mat{G}_{n\ell,\ell^{'},m}\in \Z^{n \times m}$, whose rows and columns are equal to $\mat{A}$, so we change $\Lambda_{\vec{w}}$ into
+$$\Lambda_{\vec{w}}=\Lambda_{q}(\mat{A}_{0}|\mat{A}_{1}+\mat{W}).$$
+Similarly, we define $\mat{V}^{'}=[\mat{V}_{1},...,\mat{V}_{\ell}]^{T}$, and set $\mat{V}=\mat{G}^{-1}_{n\ell,\ell^{'},m}(\mat{V}^{'}\mat{G}_{n,2,m})\in [\ell^{'}]^{m \times m}$. Then $F_{\vec{v}}$ becomes
+$$F_{\vec{v}}(\vec{c})=(\vec{c}_{0},\vec{c}_{1}\mat{V}),$$
+so the lattice $\Lambda_{\vec{v},\vec{w}}$ becomes
+$$\Lambda_{\vec{v},\vec{w}}=\Lambda_{q}(\mat{A}_{0}|\mat{A}_{1}\mat{V}+\mat{W}\mat{V}),$$
+it's easy to check that $\mat{W}\mat{V}=\mat{0}$ if $\vec{w}^{T}\vec{v}=0$, and the norm of $\mat{V}$ is small. The secret key is a short basis of lattice $\Lambda^{\perp}_{q}(\mat{A}_{0}|\mat{A}_{1}\mat{V})$. Therefore, we yield a compact IPE from LWE.
+
+\subsection{Comparison with prior work}
+In this section, we first provide a detailed comparison with the first lattice-based IPE construction ~\cite{AC:AgrFreVai11} and the follow-up work ~\cite{PKC:Xagawa13}, then we compare the HIPE scheme and FIBE scheme with prior works.\
+
+We start from the scheme ~\cite{AC:AgrFreVai11},for the use of the binary decomposition technique, there are $O(\ell \log q)$ matrices in public parameters in their construction. Then, ~\cite{PKC:Xagawa13} improved the scheme by removing the binary decomposition technique, resulting a scheme with $O(\ell)$ matrices in public parameters. \
+
+In the following Table 1, we compare the current state-of-the-arts constructions that are plain LWE-based and achieve weakly attribute hiding security with polynomial key queries-the work~\cite{AC:AgrFreVai11,PKC:Xagawa13} and this work. We set the length of the predicate/sttribute space to be $\log^{2}\lambda$, and security level to be super-poly.
+\begin{table}[htbp]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline Scheme Type & Security Level & Predicate/Attribute Length & \# matrices in \mpk \\
+\hline \cite{AC:AgrFreVai11} & super-poly & $\log^{2}\lambda$ & $\log^{2}\lambda\cdot \log q$  \\
+\hline \cite{PKC:Xagawa13} & super-poly & $\log^{2}\lambda$ & $\log^{2}\lambda$ \\
+\hline  This paper & super-poly & $\log^{2}\lambda$ & 2\\
+\hline
+\end{tabular}
+\caption{Comparison of our IPE and prior schemes}
+\end{table}
+We also note that, assuming the exiting of a collision resistant hash function from $\{0,1\}^{\lambda}$ to $\{0,1\}^{\log^{2}\lambda}$, we can extend the predicate length to $\lambda$, then the number of the matrices in $\mpk$ in~\cite{AC:AgrFreVai11} is $\log^{2}\lambda\cdot \log q$, and $\log^{2}\lambda$ in~\cite{PKC:Xagawa13}, and 2 in our scheme.\
+
+Next, we compare our HIPE scheme with ~\cite{LC:AbdDeCMoc12,PKC:Xagawa13}. The number of matrices in ~\cite{LC:AbdDeCMoc12}'s public key is $O(\ell d \log q)$, and ~\cite{PKC:Xagawa13}'s is $O(d+\ell \log q)$, whereas our scheme enjoys compact a public key with just 2 matrices. We omit the detail, which can be obtained in the full version of the paper.\
+
+Finally, we sketch the comparison of our FIBE scheme with some related works. The number of public matrices in~\cite{PKC:ABVVW12} is $2\ell$, and $2\ell$ trapdoor matrices in $\msk$. ~\cite{PKC:Xagawa13} proposed a FIBE scheme with $\ell+1$ public matrices and one trapdoor matrix. However, in our construction, these are $2$ and 1 respectively. We describe concrete schemes in full version paper.\\
+SS\\
+S\\
+S\\
+S\\
+S\\
+S\\
+S\\
+S\\
+S\\
+S\\
+S\\
+S\\
+S\\
+
+
+
+
